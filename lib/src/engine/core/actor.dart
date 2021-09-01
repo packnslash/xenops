@@ -1,46 +1,33 @@
 import 'package:piecemeal/piecemeal.dart';
 
 import '../action/action.dart';
+import '../action/behavior.dart';
 import 'energy.dart';
 import 'game.dart';
 
 abstract class Actor {
+  final String name;
   final Game game;
   final Energy energy = Energy();
 
-  Vec _pos;
-  Vec get pos => _pos;
+  Vec get pos;
 
-  set pos(Vec value) {
-    if (value != _pos) {
-      changePosition(_pos, value);
-      _pos = value;
-    }
-  }
-
-  int get x => pos.x;
-
-  set x(int value) {
-    pos = Vec(value, y);
-  }
-
-  int get y => pos.y;
-
-  set y(int value) {
-    pos = Vec(x, value);
-  }
-
-  Actor(this.game, int x, int y) : _pos = Vec(x,y);
+  Actor(this.name, this.game);
 
   Object get appearance;
 
-  bool get needsInput => false;
+  bool get needsInput {
+    if (behavior != null && !behavior!.canPerform(this)) {
+      waitForInput();
+    }
 
-  void changePosition(Vec from, Vec to) {
-    game.stage.moveActor(from, to);
+    return behavior == null;
   }
 
   int speed = Energy.normalSpeed;
+
+  Behavior? behavior;
+  Behavior? lastBehavior;
 
   Action getAction() {
     var action = onGetAction();
@@ -48,7 +35,17 @@ abstract class Actor {
     return action;
   }
 
-  Action onGetAction();
+  Action onGetAction() => behavior!.getAction(this);
+
+  void continueBehavior() {
+    behavior = lastBehavior;
+    lastBehavior = null;
+  }
+
+  void waitForInput() {
+    lastBehavior = behavior;
+    behavior = null;
+  } 
 
   void finishTurn(Action action) {
     energy.spend();

@@ -2,6 +2,8 @@ import 'package:piecemeal/piecemeal.dart';
 
 import '../core/game.dart';
 import '../core/actor.dart';
+import '../unit/unit.dart';
+import '../unit/city.dart';
 import 'tile.dart';
 
 class Stage {
@@ -22,11 +24,13 @@ class Stage {
 
   final Array2D<Tile> tiles;
 
-  final Array2D<Actor?> _actorsByTile;
+  final Array2D<Unit?> _unitsByTile;
+  final Array2D<City?> _citiesByTile;
 
   Stage(int width, int height, this.game) : 
     tiles = Array2D.generated(width, height, (_) => Tile()),
-    _actorsByTile = Array2D(width, height, null);
+    _unitsByTile = Array2D(width, height, null),
+    _citiesByTile = Array2D(width, height, null);
 
   Tile operator [](Vec pos) => tiles[pos];
 
@@ -35,28 +39,35 @@ class Stage {
   void set(int x, int y, Tile tile) => tiles.set(x, y, tile);
 
   void addActor(Actor actor) {
-    assert(_actorsByTile[actor.pos] == null);
+    if (actor is Unit) {
+      assert(_unitsByTile[actor.pos] == null);
 
+      _unitsByTile[actor.pos] = actor;
+    } else if (actor is City) {
+      assert(_citiesByTile[actor.pos] == null);
+
+      _citiesByTile[actor.pos] = actor;
+    }
+    
     _actors.add(actor);
-    _actorsByTile[actor.pos] = actor;
   }
 
-  void moveActor(Vec from, Vec to) {
-    var actor = _actorsByTile[from];
-    _actorsByTile[from] = null;
-    _actorsByTile[to] = actor;
+  void moveUnit(Vec from, Vec to) {
+    var actor = _unitsByTile[from];
+    _unitsByTile[from] = null;
+    _unitsByTile[to] = actor;
   }
 
-  void removeActor(Actor actor) {
-    assert(_actorsByTile[actor.pos] == actor);
+  void removeUnit(Unit unit) {
+    assert(_unitsByTile[unit.pos] == unit);
 
-    var index = _actors.indexOf(actor);
+    var index = _actors.indexOf(unit);
     if (_currentActorIndex > index) _currentActorIndex--;
     _actors.removeAt(index);
 
     if (_currentActorIndex >= _actors.length) _currentActorIndex = 0;
 
-    _actorsByTile[actor.pos] = null;
+    _unitsByTile[unit.pos] = null;
   }
 
   void advanceActor() {
@@ -70,7 +81,18 @@ class Stage {
     }
   }
 
-  Actor? actorAt(Vec pos) => _actorsByTile[pos];
+  Actor? actorAt(Vec pos) {
+    if (_unitsByTile[pos] != null) {
+      return _unitsByTile[pos];
+    } 
+    else {
+      return _citiesByTile[pos];
+    }
+  }
+
+  Unit? unitAt(Vec pos) => _unitsByTile[pos];
+  
+  City? cityAt(Vec pos) => _citiesByTile[pos];
 
   void targetActor(Actor value) {
     _currentActorIndex = _actors.indexOf(value);

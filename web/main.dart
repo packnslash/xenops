@@ -5,6 +5,7 @@ import 'package:malison/malison.dart';
 import 'package:malison/malison_web.dart';
 import 'package:piecemeal/piecemeal.dart';
 
+import 'package:xenops/src/content.dart';
 import 'package:xenops/src/ui/game_screen.dart';
 import 'package:xenops/src/ui/input.dart';
 
@@ -17,6 +18,8 @@ const charWidth = 16;
 const charHeight = 16;
 
 void main() {
+  var content = createContent();
+
   canvas = html.CanvasElement();
 
   terminal = _makeTerminal(canvas, charWidth, charHeight);
@@ -31,10 +34,17 @@ void main() {
   _ui = UserInterface<Input>(terminal);
 
   _ui.keyPress.bind(Input.rest, KeyCode.r);
+  _ui.keyPress.bind(Input.pass, KeyCode.p);
+  _ui.keyPress.bind(Input.changeResearch, KeyCode.c);
+
   _ui.keyPress.bind(Input.nextUnit, KeyCode.e);
   _ui.keyPress.bind(Input.prevUnit, KeyCode.q);
 
-  _ui.push(GameScreen.town());
+  _ui.keyPress.bind(Input.scrollDown, KeyCode.down);
+  _ui.keyPress.bind(Input.scrollUp, KeyCode.up);
+  _ui.keyPress.bind(Input.select, KeyCode.e);
+
+  _ui.push(GameScreen.town(content));
 
   _ui.handlingInput = true;
   _ui.running = true;

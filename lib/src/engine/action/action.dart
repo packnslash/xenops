@@ -1,6 +1,11 @@
 
+import 'package:piecemeal/piecemeal.dart';
+import 'package:xenops/src/engine/unit/unitType.dart';
 import '../core/game.dart';
 import '../core/actor.dart';
+import '../unit/research.dart';
+import '../unit/city.dart';
+import '../unit/unit.dart';
 
 abstract class Action {
   Actor? _actor;
@@ -77,5 +82,30 @@ class RestAction extends Action {
   @override
   ActionResult onPerform() {
     return succeed('Rested');
+  }
+}
+
+class ResearchAction extends Action {
+  final ResearchTopic topic;
+
+  ResearchAction(this.topic);
+
+  @override
+  ActionResult onPerform() {
+    var city = actor as City;
+
+    city.research.researchTopic(topic);
+
+    if (city.research.completed(topic)) {
+      city.lastBehavior = null;
+
+      if (topic.result != UnitType.none) {
+        game.stage.addActor(Unit(game, city.pos, topic.result));
+      }
+
+      return succeed('Research completed for ${topic.name}');
+    }
+
+    return succeed('Researched ${topic.name} (${city.research.progress(topic)} / ${topic.cost})');
   }
 }

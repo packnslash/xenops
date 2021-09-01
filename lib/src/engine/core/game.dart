@@ -1,16 +1,17 @@
 import 'dart:collection';
 
 import 'package:piecemeal/piecemeal.dart';
-import 'package:xenops/src/engine/unit/unit.dart';
 
-import 'energy.dart';
-import 'log.dart';
-import '../stage/stage.dart';
 import '../action/action.dart';
-
-import '../../content/stage/map.dart';
+import '../stage/stage.dart';
+import '../unit/city.dart';
+import '../unit/research.dart';
+import 'log.dart';
 
 class Game {
+  final Content content;
+  final Research _research;
+
   final log = Log();
 
   final _actions = Queue<Action>();
@@ -18,23 +19,21 @@ class Game {
   Stage get stage => _stage;
   late Stage _stage;
 
-  Game({int? width, int? height}) {
+  Game(this.content, {int? width, int? height}) : _research = Research() {
     _stage = Stage(width ?? 80, height ?? 80, this);
   }
 
   void buildStage() {
-    var unitPos;
+    var cityPos;
 
-    World(stage).buildStage((pos) { 
-      unitPos = pos;
+    content.buildStage(_research, _stage, (pos) { 
+      cityPos = pos;
     });
 
-    var unit = Unit(this, unitPos);
-    _stage.addActor(unit);
+    _research.unlockTier(0);
 
-    var nextUnit = Unit(this, Vec(unitPos.x + 5, unitPos.y));
-    nextUnit.speed = Energy.minSpeed;
-    _stage.addActor(nextUnit);
+    var city = City(this, cityPos, _research);
+    _stage.addActor(city);
   }
 
   GameResult update() {
@@ -100,4 +99,10 @@ class GameResult {
   bool get needsRefresh => madeProgress;
 
   GameResult(this.madeProgress);
+}
+
+abstract class Content {
+  void buildStage(Research research, Stage stage, Function(Vec) placeCity);
+
+  Iterable<ResearchTopic> get researchTopics;
 }
