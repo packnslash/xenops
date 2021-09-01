@@ -1,4 +1,5 @@
 name: xenops
+description: "a civ clone using munificent's hauberk 'engine'"
 environment:
   sdk: '^2.12.0'
 dependencies:
