@@ -33,7 +33,7 @@ class SidebarPanel extends Panel {
         var behavior = target.lastBehavior! as ResearchBehavior;
         currentResearch = behavior.topic.name;
       
-        var l = '(${target.research.progress(behavior.topic) ?? 0}/${behavior.topic.cost})';
+        var l = '(${behavior.topic.cost - (target.research.progress(behavior.topic) ?? 0)} Turns)';
         terminal.writeAt(terminal.width - l.length - 1, 3, l, UIHue.primary);
       }
       terminal.writeAt(1, 3, '$currentResearch', UIHue.primary);
@@ -43,10 +43,10 @@ class SidebarPanel extends Panel {
       var i = 0;
 
       for (var topic in target.research.incompleteTopics) {
-        terminal.writeAt(1, y, '${i+1} ${topic.name}', _gameScreen.selectedResearchIndex == i ? UIHue.selection : UIHue.primary);
+        terminal.writeAt(1, y, '${topic.name}', _gameScreen.selectedResearchIndex == i ? UIHue.selection : UIHue.primary);
         
-        var l = '(${target.research.progress(topic) ?? 0}/${topic.cost})';
-        terminal.writeAt(terminal.width - l.length - 1, y, l, UIHue.primary);
+        var l = '(${topic.cost - (target.research.progress(topic) ?? 0)} Turns)';
+        terminal.writeAt(terminal.width - l.length - 1, y, l, UIHue.text);
         
         y += 2;
         i += 1;
