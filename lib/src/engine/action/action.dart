@@ -107,3 +107,24 @@ class ResearchAction extends Action {
     return succeed('Researched ${topic.name} (${city.research.progress(topic)} / ${topic.cost})');
   }
 }
+
+class WalkAction extends Action {
+  final Direction direction;
+
+  WalkAction(this.direction);
+
+  @override
+  ActionResult onPerform() {
+    if (direction == Direction.none) {
+      return alternate(RestAction());
+    }
+
+    var unit = actor! as Unit;
+
+    var pos = unit.pos + direction;
+
+    unit.pos = pos;
+
+    return succeed();
+  }
+}
