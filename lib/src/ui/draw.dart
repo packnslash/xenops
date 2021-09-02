@@ -2,6 +2,30 @@ import 'package:malison/malison.dart';
 import '../hues.dart';
 
 class Draw {
+  static void horizontalLine(Terminal terminal, int x, int y, int width, [Color? color]) {
+    var topRow = '─' * (width);
+    terminal.writeAt(x, y, topRow, color);
+  }
+
+  static void doubleHorizontalLine(Terminal terminal, int x, int y, int width, [Color? color]) {
+    var topRow = '═' * (width);
+    terminal.writeAt(x, y, topRow, color);
+  }
+
+  static void verticalLine(Terminal terminal, int x, int y, int height, [Color? color]) {
+    var bar = '│';
+    for (var row = y; row < y + height; row++) {
+      terminal.writeAt(x, row, bar, color);
+    }
+  }
+
+  static void doubleVerticalLine(Terminal terminal, int x, int y, int height, [Color? color]) {
+    var bar = '║';
+    for (var row = y; row < y + height; row++) {
+      terminal.writeAt(x, row, bar, color);
+    }
+  }
+
   static void box(Terminal terminal, int x, int y, int width, int height,
       [Color? color]) {
     _box(terminal, x, y, width, height, color, '┌', '─', '┐', '│', '└', '─',
