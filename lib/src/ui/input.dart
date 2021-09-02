@@ -1,7 +1,6 @@
 
 
 class Input {
-  static const rest = Input('rest');
   static const pass = Input('pass');
   static const changeResearch = Input('change research');
 
@@ -12,6 +11,7 @@ class Input {
   static const scrollUp = Input('scroll up');
   static const select = Input('select');
 
+  static const rest = Input('rest');
   static const n = Input('n');
   static const e = Input('e');
   static const s = Input('s');
