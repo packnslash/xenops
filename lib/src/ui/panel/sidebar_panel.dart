@@ -21,6 +21,12 @@ class SidebarPanel extends Panel {
     var target = game.stage.currentActor;
 
     terminal.writeAt(1, 0, '${target.name}', UIHue.text);
+    
+    var speed1 = 'AP ';
+    var speed2 = '${target.energy.energy}';
+    terminal.writeAt(terminal.width - speed1.length - speed2.length - 1, 0, speed1, UIHue.text);
+    terminal.writeAt(terminal.width - speed2.length - 1, 0, speed2, UIHue.primary);
+
     terminal.writeAt(1, 7, 'Actions', UIHue.text);
     terminal.writeAt(1, 8, '─' * (terminal.width - 2), UIHue.text);
     terminal.writeAt(1, 9, '[P]ass', UIHue.primary);
