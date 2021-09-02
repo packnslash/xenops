@@ -30,6 +30,7 @@ class _ResearchTopicBuilder {
 
   UnitType? _result;
   int? _tierLevel;
+  bool? _oneOff;
 
   _ResearchTopicBuilder(this._name, this._cost, this._result);
 
@@ -41,7 +42,11 @@ class _ResearchTopicBuilder {
     _result = res;
   }
 
+  void oneOff(bool set) {
+    _oneOff = set;
+  }
+
   ResearchTopic build() {
-    return ResearchTopic(_name, _cost, _result ?? UnitType.none, _tierLevel ?? 0);
+    return ResearchTopic(_name, _cost, _result ?? UnitType.none, _tierLevel ?? 0, _oneOff ?? false);
   }
 }
