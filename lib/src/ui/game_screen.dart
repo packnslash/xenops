@@ -39,15 +39,6 @@ class GameScreen extends Screen<Input> {
 
   @override
   bool handleInput(Input input) {
-    if (input == Input.pass) {
-      if (game.stage.currentActor.lastBehavior != null) {
-        game.stage.currentActor.continueBehavior();
-      } else {
-        game.stage.currentActor.behavior = RestBehavior();
-      }
-      return true;
-    }
-
     if (game.stage.currentActor is City) {
       var city = game.stage.currentActor as City;
 
@@ -74,6 +65,13 @@ class GameScreen extends Screen<Input> {
         }
       } else {
         switch (input) {
+          case Input.pass:
+            if (city.lastBehavior != null) {
+              city.continueBehavior();
+            } else {
+              city.behavior = ActionBehavior(PassAction());
+            }
+            return true;
           case Input.changeResearch:
             if (city.research.incompleteTopics.isNotEmpty) {
               _changingResearch = true;
@@ -89,6 +87,12 @@ class GameScreen extends Screen<Input> {
       Action? action;
 
       switch (input) {
+        case Input.pass:
+          action = PassAction();
+          break;
+        case Input.rest:
+          action = RestAction();
+          break;
         case Input.n:
           action = WalkAction(Direction.n);
           break;
