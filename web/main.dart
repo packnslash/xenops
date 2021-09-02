@@ -33,7 +33,6 @@ void main() {
 
   _ui = UserInterface<Input>(terminal);
 
-  _ui.keyPress.bind(Input.rest, KeyCode.r);
   _ui.keyPress.bind(Input.pass, KeyCode.p);
   _ui.keyPress.bind(Input.changeResearch, KeyCode.c);
 
@@ -44,6 +43,7 @@ void main() {
   _ui.keyPress.bind(Input.scrollUp, KeyCode.up);
   _ui.keyPress.bind(Input.select, KeyCode.e);
 
+  _ui.keyPress.bind(Input.rest, KeyCode.numpad5);
   _ui.keyPress.bind(Input.n,  KeyCode.numpad8);
   _ui.keyPress.bind(Input.ne, KeyCode.numpad9);
   _ui.keyPress.bind(Input.e,  KeyCode.numpad6);
