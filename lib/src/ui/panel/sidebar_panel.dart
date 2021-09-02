@@ -4,6 +4,7 @@ import 'package:xenops/src/ui/game_screen.dart';
 
 import '../../engine/unit/city.dart';
 import '../../hues.dart';
+import '../draw.dart';
 import 'panel.dart';
 
 class SidebarPanel extends Panel {
@@ -13,9 +14,7 @@ class SidebarPanel extends Panel {
 
   @override
   void renderPanel(Terminal terminal) {
-    for (var y = 0; y < terminal.height; y++) {
-      terminal.writeAt(0, y, '│', darkCoolGray);
-    }
+    Draw.verticalLine(terminal, 0, 0, terminal.height, darkCoolGray);
 
     var game = _gameScreen.game;
     var target = game.stage.currentActor;
@@ -28,7 +27,7 @@ class SidebarPanel extends Panel {
     terminal.writeAt(terminal.width - speed2.length - 1, 0, speed2, UIHue.primary);
 
     terminal.writeAt(1, 7, 'Actions', UIHue.text);
-    terminal.writeAt(1, 8, '─' * (terminal.width - 2), UIHue.text);
+    Draw.horizontalLine(terminal, 1, 8, terminal.width - 1, UIHue.text);
     terminal.writeAt(1, 9, '[P]ass', UIHue.primary);
 
     if (target is City) {
@@ -45,7 +44,10 @@ class SidebarPanel extends Panel {
       terminal.writeAt(1, 3, '$currentResearch', UIHue.primary);
       terminal.writeAt(1, 11, '[C]hange Research', UIHue.primary);
 
-      var y = 13;
+      terminal.writeAt(1, 14, 'Available Research', UIHue.text);
+      Draw.horizontalLine(terminal, 1, 15, terminal.width - 1, UIHue.text);
+
+      var y = 16;
       var i = 0;
 
       for (var topic in target.research.incompleteTopics) {
