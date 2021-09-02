@@ -12,6 +12,15 @@ class Input {
   static const scrollUp = Input('scroll up');
   static const select = Input('select');
 
+  static const n = Input('n');
+  static const e = Input('e');
+  static const s = Input('s');
+  static const w = Input('w');
+  static const ne = Input('ne');
+  static const nw = Input('nw');
+  static const se = Input('se');
+  static const sw = Input('sw');
+
   final String name;
 
   const Input(this.name);

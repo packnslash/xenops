@@ -44,6 +44,15 @@ void main() {
   _ui.keyPress.bind(Input.scrollUp, KeyCode.up);
   _ui.keyPress.bind(Input.select, KeyCode.e);
 
+  _ui.keyPress.bind(Input.n,  KeyCode.numpad8);
+  _ui.keyPress.bind(Input.ne, KeyCode.numpad9);
+  _ui.keyPress.bind(Input.e,  KeyCode.numpad6);
+  _ui.keyPress.bind(Input.se, KeyCode.numpad3);
+  _ui.keyPress.bind(Input.s,  KeyCode.numpad2);
+  _ui.keyPress.bind(Input.sw, KeyCode.numpad1);
+  _ui.keyPress.bind(Input.w,  KeyCode.numpad4);
+  _ui.keyPress.bind(Input.nw, KeyCode.numpad7);
+
   _ui.push(GameScreen.town(content));
 
   _ui.handlingInput = true;
