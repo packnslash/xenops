@@ -94,9 +94,7 @@ class ResearchAction extends Action {
   ActionResult onPerform() {
     var city = actor as City;
 
-    city.research.researchTopic(topic);
-
-    if (city.research.completed(topic)) {
+    if (city.research.researchTopic(topic)) {
       city.lastBehavior = null;
 
       if (topic.result != UnitType.none) {
