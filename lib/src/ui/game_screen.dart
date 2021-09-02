@@ -47,6 +47,7 @@ class GameScreen extends Screen<Input> {
       }
       return true;
     }
+
     if (game.stage.currentActor is City) {
       var city = game.stage.currentActor as City;
 
@@ -81,6 +82,41 @@ class GameScreen extends Screen<Input> {
             }
             return true;
         }
+      }
+    } else if (game.stage.currentActor is Unit) {
+      var unit = game.stage.currentActor as Unit;
+
+      Action? action;
+
+      switch (input) {
+        case Input.n:
+          action = WalkAction(Direction.n);
+          break;
+        case Input.ne:
+          action = WalkAction(Direction.ne);
+          break;
+        case Input.e:
+          action = WalkAction(Direction.e);
+          break;
+        case Input.se:
+          action = WalkAction(Direction.se);
+          break;
+        case Input.s:
+          action = WalkAction(Direction.s);
+          break;
+        case Input.sw:
+          action = WalkAction(Direction.sw);
+          break;
+        case Input.w:
+          action = WalkAction(Direction.w);
+          break;
+        case Input.nw:
+          action = WalkAction(Direction.nw);
+          break;
+      }
+
+      if (action != null) {
+        unit.setNextAction(action);
       }
     }
 
