@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:malison/malison.dart';
 import 'package:piecemeal/piecemeal.dart';
 
+import '../../engine/unit/city.dart';
 import '../../hues.dart';
 import '../game_screen.dart';
 import 'panel.dart';
@@ -40,6 +41,17 @@ class StagePanel extends Panel {
       back = tileGlyph.back;
 
       var actor = game.stage.actorAt(pos);
+
+      if (game.stage.currentActor is City) {
+        var city = game.stage.currentActor as City;
+        if (city.claimedTiles.contains(pos)) {
+          fore = Color.gold;
+          back = Color.darkGold;
+        } else if (city.claimableTiles.contains(pos)) {
+          fore = Color.purple;
+          back = Color.darkPurple;
+        }
+      }
 
       if (actor != null) {
         var actorGlyph = actor.appearance;
