@@ -19,7 +19,7 @@ class ActionBehavior extends Behavior {
 
   @override
   Action getAction(Actor actor) {
-    actor.waitForInput();
+    actor.behavior = null;
     return action;
   }
 }

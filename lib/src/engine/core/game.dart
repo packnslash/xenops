@@ -60,7 +60,10 @@ class Game {
 
           if (result.succeeded && action.consumesEnergy) {
             action.actor!.finishTurn(action);
-            stage.advanceActor();
+
+            if (!action.actor!.energy.canTakeTurn) {
+              stage.advanceActor();
+            }
           }
         }
       }

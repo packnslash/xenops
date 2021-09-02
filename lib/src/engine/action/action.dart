@@ -17,6 +17,8 @@ abstract class Action {
   late final bool _consumesEnergy;
   bool get consumesEnergy => _consumesEnergy;
 
+  int get energyCost;
+
   void bind(Actor actor, {bool? consumesEnergy}) {
     _actor = actor;
     _game = actor.game;
@@ -24,6 +26,9 @@ abstract class Action {
   }
 
   ActionResult perform() {
+    if (actor!.energy.energy < energyCost) {
+      return fail('Not enough energy!');
+    }
     return onPerform();
   }
 
@@ -80,6 +85,9 @@ class ActionResult {
 
 class RestAction extends Action {
   @override
+  int get energyCost => 1;
+
+  @override
   ActionResult onPerform() {
     return succeed('Rested');
   }
@@ -87,6 +95,9 @@ class RestAction extends Action {
 
 class ResearchAction extends Action {
   final ResearchTopic topic;
+
+  @override
+  int get energyCost => 1;
 
   ResearchAction(this.topic);
 
@@ -111,6 +122,9 @@ class ResearchAction extends Action {
 class WalkAction extends Action {
   final Direction direction;
 
+  @override
+  int get energyCost => 1;
+
   WalkAction(this.direction);
 
   @override
@@ -125,6 +139,16 @@ class WalkAction extends Action {
 
     unit.pos = pos;
 
-    return succeed();
+    return succeed('Unit walked $direction');
+  }
+}
+
+class PassAction extends Action {
+  @override
+  int get energyCost => actor!.energy.energy;
+
+  @override
+  ActionResult onPerform() {
+    return succeed('Actor passed their turn');
   }
 }

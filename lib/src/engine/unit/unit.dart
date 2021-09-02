@@ -1,7 +1,6 @@
 import 'package:piecemeal/piecemeal.dart';
 import '../action/action.dart';
 import '../core/actor.dart';
-import '../core/energy.dart';
 import '../core/game.dart';
 import '../action/behavior.dart';
 import 'unitType.dart';
@@ -34,8 +33,11 @@ class Unit extends Actor {
     pos = Vec(x, value);
   }
 
+  @override
+  int get speed => 2;
+
   Unit(Game game, this._pos, this.type) : super('Unit', game) {
-    energy.energy = Energy.actionCost;
+    energy.energy = speed;
   }
 
   @override

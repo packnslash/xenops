@@ -24,7 +24,7 @@ abstract class Actor {
     return behavior == null;
   }
 
-  int speed = Energy.normalSpeed;
+  int get speed => 1;
 
   Behavior? behavior;
   Behavior? lastBehavior;
@@ -48,8 +48,7 @@ abstract class Actor {
   } 
 
   void finishTurn(Action action) {
-    energy.spend();
-
+    energy.spend(action.energyCost);
     onFinishTurn(action);
   }
 
